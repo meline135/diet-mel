@@ -10,9 +10,7 @@ export const AppProvider = ({ children }) => {
     
     if (lastActiveDate !== today) {
       // It's a new day! clear data.
-      localStorage.removeItem('trackedOption');
-      localStorage.removeItem('hydrationIntake');
-      localStorage.removeItem('completedMeals');
+      localStorage.removeItem('userStates');
       localStorage.setItem('lastActiveDate', today);
       return true; // Indicates a reset happened
     }
@@ -22,72 +20,141 @@ export const AppProvider = ({ children }) => {
   // Run the check once at startup to determine initial states
   const [didReset] = useState(checkAndResetDaily);
 
-  // Option selected for the day (1, 2, 3, or 4)
-  const [globalOption, setGlobalOption] = useState(() => {
-    if (didReset) return null;
-    const saved = localStorage.getItem('trackedOption');
-    return saved ? parseInt(saved, 10) : null;
+  // Initial state for user data
+  const defaultUserState = {
+    globalOption: null,
+    completedMeals: {},
+    hydrationIntake: 0,
+    substitutions: {} // New: { [ingredientKey]: substituteFoodObject }
+  };
+
+  // State mapping user IDs to their respective tracking data
+  const [userStates, setUserStates] = useState(() => {
+    if (didReset) return { mel: { ...defaultUserState }, thomas: { ...defaultUserState } };
+    const saved = localStorage.getItem('userStates');
+    const parsed = saved ? JSON.parse(saved) : {};
+    
+    // Ensure both users exist in the state
+    return {
+      mel: parsed.mel || { ...defaultUserState },
+      thomas: parsed.thomas || { ...defaultUserState }
+    };
   });
 
-  // Current Hydration (in ml)
-  const [hydrationIntake, setHydrationIntake] = useState(() => {
-    if (didReset) return 0;
-    const saved = localStorage.getItem('hydrationIntake');
-    return saved ? parseInt(saved, 10) : 0;
-  });
-
-  // Target Goal (e.g., 2000 ml)
   const hydrationGoal = 2000;
-
-  // Completed Meals
-  const [completedMeals, setCompletedMeals] = useState(() => {
-    if (didReset) return {};
-    const saved = localStorage.getItem('completedMeals');
-    return saved ? JSON.parse(saved) : {};
-  });
 
   // Save states to LocalStorage
   useEffect(() => {
-    if (globalOption !== null) {
-      localStorage.setItem('trackedOption', globalOption);
-    }
-  }, [globalOption]);
+    localStorage.setItem('userStates', JSON.stringify(userStates));
+  }, [userStates]);
 
+  // --- MIDNIGHT RESET LOGIC ---
   useEffect(() => {
-    localStorage.setItem('hydrationIntake', hydrationIntake);
-  }, [hydrationIntake]);
+    const checkMidnight = () => {
+      const now = new Date();
+      const night = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1, // Tomorrow
+        0, 0, 0 // Midnight
+      );
+      const msToMidnight = night.getTime() - now.getTime();
 
-  useEffect(() => {
-    localStorage.setItem('completedMeals', JSON.stringify(completedMeals));
-  }, [completedMeals]);
+      const timerId = setTimeout(() => {
+        resetDaily();
+        checkMidnight(); // Re-set for the following day
+      }, msToMidnight);
 
-  const toggleMeal = (mealType) => {
-    setCompletedMeals(prev => ({
+      return timerId;
+    };
+
+    const timerId = checkMidnight();
+    return () => clearTimeout(timerId);
+  }, []);
+
+  const setGlobalOption = (userId, option) => {
+    setUserStates(prev => ({
       ...prev,
-      [mealType]: !prev[mealType]
+      [userId]: {
+        ...prev[userId],
+        globalOption: option
+      }
     }));
   };
 
+  const setHydrationIntake = (userId, amountOrFn) => {
+    setUserStates(prev => {
+      const current = prev[userId].hydrationIntake;
+      const next = typeof amountOrFn === 'function' ? amountOrFn(current) : amountOrFn;
+      return {
+        ...prev,
+        [userId]: {
+          ...prev[userId],
+          hydrationIntake: next
+        }
+      };
+    });
+  };
+
+  const toggleMeal = (userId, mealType) => {
+    setUserStates(prev => ({
+      ...prev,
+      [userId]: {
+        ...prev[userId],
+        completedMeals: {
+          ...prev[userId].completedMeals,
+          [mealType]: !prev[userId].completedMeals[mealType]
+        }
+      }
+    }));
+  };
+
+  const setSubstitution = (userId, ingredientKey, substituteFood) => {
+    setUserStates(prev => ({
+      ...prev,
+      [userId]: {
+        ...prev[userId],
+        substitutions: {
+          ...prev[userId].substitutions,
+          [ingredientKey]: substituteFood
+        }
+      }
+    }));
+  };
+
+  const clearSubstitution = (userId, ingredientKey) => {
+    setUserStates(prev => {
+      const newSubstitutions = { ...prev[userId].substitutions };
+      delete newSubstitutions[ingredientKey];
+      return {
+        ...prev,
+        [userId]: {
+          ...prev[userId],
+          substitutions: newSubstitutions
+        }
+      };
+    });
+  };
+
   const resetDaily = () => {
-    setGlobalOption(null);
-    setHydrationIntake(0);
-    setCompletedMeals({});
-    localStorage.removeItem('trackedOption');
-    localStorage.removeItem('hydrationIntake');
-    localStorage.removeItem('completedMeals');
+    setUserStates({
+      mel: { ...defaultUserState },
+      thomas: { ...defaultUserState }
+    });
+    localStorage.removeItem('userStates');
     localStorage.setItem('lastActiveDate', new Date().toLocaleDateString());
   };
 
   return (
     <AppContext.Provider
       value={{
-        globalOption,
+        userStates,
         setGlobalOption,
-        hydrationIntake,
         setHydrationIntake,
         hydrationGoal,
-        completedMeals,
         toggleMeal,
+        setSubstitution,
+        clearSubstitution,
         resetDaily,
       }}
     >
@@ -97,3 +164,5 @@ export const AppProvider = ({ children }) => {
 };
 
 export const useAppContext = () => useContext(AppContext);
+
+
