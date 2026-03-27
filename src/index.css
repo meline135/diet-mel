@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-pink: #FADCD9;
+  --color-brand-green: #97C16B;
+  --color-brand-blue: #9DB4FF;
+  --color-brand-orange: #FFB37C;
+  --color-brand-purple: #C8A2C8;
+  
+  --color-card-bg: #FFFFFF;
+  --radius-card: 1.5rem;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-brand-pink);
+  color: #333333;
+}
+
+/* Utilities for soft cards */
+@utility soft-card {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+}
+
+@utility pastel-card {
+  border-radius: var(--radius-card);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
