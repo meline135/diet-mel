@@ -33,17 +33,17 @@ export const useSheetData = (sheetCsvUrl) => {
             const mealType = mealTypeRaw.trim(); 
             const optionRaw = row['Option'];
             if (!optionRaw) return acc;
-            const optionNumber = parseInt(optionRaw, 10);
+            const optionValue = String(optionRaw).trim(); // Support both "1" and "ON"
             
             if (!acc[mealType]) acc[mealType] = [];
             
             // Find if this option already exists in the mealType array
-            let optionGroup = acc[mealType].find(opt => opt.optionNumber === optionNumber);
+            let optionGroup = acc[mealType].find(opt => String(opt.optionNumber) === optionValue);
             
             if (!optionGroup) {
               optionGroup = {
-                id: `${mealType}-${optionNumber}`,
-                optionNumber: optionNumber,
+                id: `${mealType}-${optionValue}`,
+                optionNumber: optionValue,
                 title: '', // We will set this based on the first ingredient
                 calories: null, // No calories in sheet right now
                 imageUrl: row['Image URL'] || '', 

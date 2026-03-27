@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink' }) {
+export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink', allowedOptions = [1, 2, 3, 4] }) {
   const { userStates, setGlobalOption, setSubstitution } = useAppContext();
   const { data: mealsData, loading, error } = useSheetData(sheetUrl);
   
@@ -30,12 +30,12 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
     setModalOpen(false);
   };
 
-  // Default to Option 1 on mount if no option is selected
+  // Default to the first allowed option on mount if no option is selected
   useEffect(() => {
-    if (globalOption === null) {
-      setGlobalOption(userId, 1);
+    if (globalOption === null && allowedOptions.length > 0) {
+      setGlobalOption(userId, allowedOptions[0]);
     }
-  }, [globalOption, setGlobalOption, userId]);
+  }, [globalOption, setGlobalOption, userId, allowedOptions]);
 
   if (loading) {
     const loaderColors = {
@@ -60,7 +60,6 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
 
   // Use Object.entries to iterate over our grouped meal types 
   const mealCategories = mealsData ? Object.entries(mealsData) : [];
-  const optionsList = [1, 2, 3, 4]; // The 4 options defined by the coach
 
   const themeStyles = {
     pink: {
@@ -85,24 +84,25 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
 
         {/* Global Option Selector Tabs */}
         <div className="flex justify-between items-center gap-2 bg-white/40 p-1.5 rounded-full ring-1 ring-white/60 shadow-inner">
-          {optionsList.map((opt) => (
+          {allowedOptions.map((opt) => (
             <button
               key={opt}
               onClick={() => setGlobalOption(userId, opt)}
               className={twMerge(
                 clsx(
-                  "flex-1 py-2.5 rounded-full text-sm font-bold transition-all duration-300",
-                  globalOption === opt 
+                  "flex-1 py-3 rounded-full text-xs font-black uppercase tracking-tighter transition-all duration-300",
+                  String(globalOption) === String(opt) 
                   ? `${currentTheme.btnActive} text-white shadow-lg scale-105` 
                   : "text-gray-500 hover:bg-white/50"
                 )
               )}
             >
-              Opt {opt}
+              {typeof opt === 'number' ? `Opt ${opt}` : opt}
             </button>
           ))}
         </div>
       </header>
+
 
       {mealCategories.length === 0 ? (
         <div className="text-center text-gray-500 mt-10">

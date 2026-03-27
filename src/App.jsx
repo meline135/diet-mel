@@ -19,11 +19,11 @@ export default function App() {
               <Route path="/" element={<Navigate to="/diet-mel" replace />} />
               <Route 
                 path="/diet-mel" 
-                element={<DietPage userId="mel" sheetUrl={MEL_SHEET_URL} title="Diet Mel" accentColor="pink" />} 
+                element={<DietPage userId="mel" sheetUrl={MEL_SHEET_URL} title="Diet Mel" accentColor="pink" allowedOptions={[1, 2, 3, 4]} />} 
               />
               <Route 
                 path="/diet-thomas" 
-                element={<DietPage userId="thomas" sheetUrl={THOMAS_SHEET_URL} title="Diet Thomas" accentColor="blue" />} 
+                element={<DietPage userId="thomas" sheetUrl={THOMAS_SHEET_URL} title="Diet Thomas" accentColor="blue" allowedOptions={['ON', 'OFF']} />} 
               />
               <Route path="/hydration" element={<HydrationPage />} />
             </Routes>
