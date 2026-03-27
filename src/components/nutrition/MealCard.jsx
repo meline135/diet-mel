@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { ChevronDown } from 'lucide-react';
-import Lottie from 'lottie-react';
-import sparkleAnimation from '../../assets/CTA Button Background.json';
 
 export const MealCard = ({ 
   title, 
@@ -40,17 +38,6 @@ export const MealCard = ({
         : "bg-white shadow-[0_10px_40px_-10px_rgba(236,72,153,0.15)] ring-1 ring-pink-100/60 scale-100"
     ))}>
       
-      {/* Custom Lottie Animation Overlay */}
-      {isCompleted && (
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-3xl mix-blend-overlay opacity-80 flex items-center justify-center">
-          <Lottie 
-            animationData={sparkleAnimation} 
-            loop={true} 
-            className="w-[150%] h-[150%] object-cover scale-[1.2]" 
-          />
-        </div>
-      )}
-
       {/* Card Header (Clickable to expand/collapse) */}
       <div 
         onClick={handleHeaderClick}
