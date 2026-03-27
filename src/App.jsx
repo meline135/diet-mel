@@ -16,9 +16,8 @@ export default function App() {
         <div className="min-h-screen pb-16 flex justify-center text-gray-800 font-sans selection:bg-pink-200">
           <main className="w-full max-w-md relative z-10 px-4">
             <Routes>
-              <Route path="/" element={<Navigate to="/diet-mel" replace />} />
               <Route 
-                path="/diet-mel" 
+                path="/" 
                 element={<DietPage userId="mel" sheetUrl={MEL_SHEET_URL} title="Diet Mel" accentColor="pink" allowedOptions={[1, 2, 3, 4]} />} 
               />
               <Route 

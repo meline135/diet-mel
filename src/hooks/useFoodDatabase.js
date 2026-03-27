@@ -22,8 +22,11 @@ export const useFoodDatabase = () => {
       complete: (results) => {
         try {
           const rawData = results.data;
-          // Filter out rows that don't have a food name
-          const cleanedData = rawData.filter(row => row.Food_Name || row.food_name);
+          // Filter out rows that don't have both a food name and a category (skips dividers)
+          const cleanedData = rawData.filter(row => 
+            (row.Food_Name || row.food_name) && 
+            (row.Category || row.category)
+          );
           setDb(cleanedData);
           setLoading(false);
         } catch (err) {
