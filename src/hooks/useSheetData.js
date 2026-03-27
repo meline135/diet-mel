@@ -67,7 +67,8 @@ export const useSheetData = (sheetCsvUrl) => {
               
               optionGroup.ingredients.push({
                 name: ingName,
-                quantity: ingQty || ''
+                quantity: ingQty || '',
+                imageUrl: row['Image URL'] || ''
               });
             }
             
