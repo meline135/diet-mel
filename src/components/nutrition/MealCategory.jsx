@@ -18,7 +18,7 @@ export const MealCategory = ({
   const isCompleted = currentUserState.completedMeals?.[title] || false;
 
   // Find the data for the currently selected global tab option.
-  const activeOption = optionsData.find(opt => opt.optionNumber === globalOption);
+  const activeOption = optionsData.find(opt => String(opt.optionNumber) === String(globalOption));
 
   const errorTheme = {
     pink: 'bg-pink-50/50 border-pink-200 text-pink-400',
