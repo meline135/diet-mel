@@ -8,13 +8,14 @@
   --color-brand-purple: #C8A2C8;
   
   --color-card-bg: #FFFFFF;
+  --color-bg-beige: #F0ECE8;
   --radius-card: 1.5rem;
 }
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--color-brand-pink);
-  color: #333333;
+  background-color: var(--color-bg-beige);
+  color: #1A1A1A;
 }
 
 /* Utilities for soft cards */

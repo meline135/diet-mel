@@ -9,6 +9,7 @@ export const MealCategory = ({
   userId, 
   accentColor = 'pink',
   onIngredientClick = () => {},
+  onIngredientReset = () => {},
   substitutions = {}
 }) => {
   const { userStates, toggleMeal } = useAppContext();
@@ -37,6 +38,7 @@ export const MealCategory = ({
              onToggleComplete={() => toggleMeal(userId, title)}
              accentColor={accentColor}
              onIngredientClick={(ing) => onIngredientClick(ing, title)}
+             onIngredientReset={onIngredientReset}
              substitutions={substitutions}
            />
         ) : (
@@ -48,5 +50,6 @@ export const MealCategory = ({
     </div>
   );
 };
+
 
 

@@ -24,7 +24,17 @@ export const AppProvider = ({ children }) => {
   const defaultUserState = {
     globalOption: null,
     completedMeals: {},
-    hydrationIntake: 0,
+    liquids: { 
+      Water: 0, 
+      Coffee: 0, 
+      Tea: 0, 
+      Whey: 0, 
+      Soda: 0, 
+      PreWorkout: 0, 
+      Creatine: 0 
+    },
+    intakeHistory: [], // Tracks [{ type, amount }]
+    hydrationGoal: 2000, 
     substitutions: {} // New: { [ingredientKey]: substituteFoodObject }
   };
 
@@ -40,8 +50,6 @@ export const AppProvider = ({ children }) => {
       thomas: parsed.thomas || { ...defaultUserState }
     };
   });
-
-  const hydrationGoal = 2000;
 
   // Save states to LocalStorage
   useEffect(() => {
@@ -82,18 +90,64 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
-  const setHydrationIntake = (userId, amountOrFn) => {
+  const setHydrationIntake = (userId, drinkType, amountOrFn) => {
     setUserStates(prev => {
-      const current = prev[userId].hydrationIntake;
-      const next = typeof amountOrFn === 'function' ? amountOrFn(current) : amountOrFn;
+      const currentLiquids = { ...prev[userId].liquids };
+      const currentHistory = [...(prev[userId].intakeHistory || [])];
+      
+      const currentVal = currentLiquids[drinkType] || 0;
+      const nextVal = typeof amountOrFn === 'function' ? amountOrFn(currentVal) : amountOrFn;
+      
+      // If we are adding (not resetting or undoing), record to history
+      const diff = nextVal - currentVal;
+      if (diff > 0) {
+        currentHistory.push({ type: drinkType, amount: diff });
+      }
+
       return {
         ...prev,
         [userId]: {
           ...prev[userId],
-          hydrationIntake: next
+          liquids: {
+            ...currentLiquids,
+            [drinkType]: Math.max(0, nextVal)
+          },
+          intakeHistory: currentHistory
         }
       };
     });
+  };
+
+  const undoHydration = (userId) => {
+    setUserStates(prev => {
+      const currentHistory = [...(prev[userId].intakeHistory || [])];
+      if (currentHistory.length === 0) return prev;
+
+      const lastIntake = currentHistory.pop();
+      const currentLiquids = { ...prev[userId].liquids };
+      
+      return {
+        ...prev,
+        [userId]: {
+          ...prev[userId],
+          liquids: {
+            ...currentLiquids,
+            [lastIntake.type]: Math.max(0, (currentLiquids[lastIntake.type] || 0) - lastIntake.amount)
+          },
+          intakeHistory: currentHistory
+        }
+      };
+    });
+  };
+
+  const setHydrationGoal = (userId, newGoal) => {
+    setUserStates(prev => ({
+      ...prev,
+      [userId]: {
+        ...prev[userId],
+        hydrationGoal: newGoal
+      }
+    }));
   };
 
   const toggleMeal = (userId, mealType) => {
@@ -151,7 +205,8 @@ export const AppProvider = ({ children }) => {
         userStates,
         setGlobalOption,
         setHydrationIntake,
-        hydrationGoal,
+        undoHydration,
+        setHydrationGoal,
         toggleMeal,
         setSubstitution,
         clearSubstitution,
@@ -161,6 +216,8 @@ export const AppProvider = ({ children }) => {
       {children}
     </AppContext.Provider>
   );
+
+
 };
 
 export const useAppContext = () => useContext(AppContext);

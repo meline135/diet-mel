@@ -8,7 +8,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink', allowedOptions = [1, 2, 3, 4] }) {
-  const { userStates, setGlobalOption, setSubstitution } = useAppContext();
+  const { userStates, setGlobalOption, setSubstitution, clearSubstitution } = useAppContext();
   const { data: mealsData, loading, error } = useSheetData(sheetUrl);
   
   const currentUserState = userStates[userId] || {};
@@ -28,6 +28,11 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
     const key = `${selectedIng.mealTitle}-${selectedIng.name}`;
     setSubstitution(userId, key, substituteItem);
     setModalOpen(false);
+  };
+
+  const handleIngredientReset = (ing, mealTitle) => {
+    const key = `${mealTitle}-${ing.name}`;
+    clearSubstitution(userId, key);
   };
 
   // Default to the first allowed option on mount if no option is selected
@@ -63,13 +68,13 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
 
   const themeStyles = {
     pink: {
-      headerBg: 'bg-[#FADCD9]/90',
-      headerShadow: 'shadow-[0_10px_20px_-15px_rgba(250,220,217,1)]',
+      headerBg: 'bg-white/70 border-b border-pink-100/50',
+      headerShadow: 'shadow-[0_8px_30px_rgba(250,220,217,0.4)]',
       btnActive: 'bg-pink-500 shadow-pink-500/30',
     },
     blue: {
-      headerBg: 'bg-[#E3F2FD]/90',
-      headerShadow: 'shadow-[0_10px_20px_-15px_rgba(187,222,251,1)]',
+      headerBg: 'bg-white/70 border-b border-blue-100/50',
+      headerShadow: 'shadow-[0_8px_30px_rgba(187,222,251,0.4)]',
       btnActive: 'bg-[#3A8EBA] shadow-[#3A8EBA]/30',
     }
   };
@@ -118,6 +123,7 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
               userId={userId}
               accentColor={accentColor}
               onIngredientClick={handleIngredientClick}
+              onIngredientReset={handleIngredientReset}
               substitutions={substitutions}
             />
           ))}
@@ -138,5 +144,6 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
     </div>
   );
 }
+
 
 

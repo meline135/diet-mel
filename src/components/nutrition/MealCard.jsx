@@ -10,6 +10,7 @@ export const MealCard = ({
   onToggleComplete,
   accentColor = 'pink',
   onIngredientClick = () => {},
+  onIngredientReset = () => {},
   substitutions = {}
 }) => {
   // Local state to manage expanding/collapsing
@@ -47,6 +48,7 @@ export const MealCard = ({
       imgBg: "bg-pink-50",
       ingName: "text-gray-700",
       ingQtyBg: "text-pink-400 bg-pink-50/80 border-pink-100/50",
+      resetBtn: "text-pink-400 hover:text-red-500 hover:bg-red-50"
     },
     blue: {
       cardCompleted: "bg-gradient-to-br from-blue-50 to-white ring-blue-200/50",
@@ -61,6 +63,7 @@ export const MealCard = ({
       imgBg: "bg-blue-50",
       ingName: "text-gray-700",
       ingQtyBg: "text-[#3A8EBA] bg-blue-50/80 border-blue-100/50",
+      resetBtn: "text-[#3A8EBA] hover:text-red-500 hover:bg-red-50"
     }
   };
 
@@ -138,40 +141,60 @@ export const MealCard = ({
             const displayImg = sub ? (sub.Image_URL || sub.image_url) : ing.imageUrl;
 
             return (
-              <button 
-                key={idx} 
-                onClick={() => onIngredientClick(ing)}
-                className="w-full flex items-center gap-4 group/item hover:translate-x-1 transition-transform duration-300 text-left"
-              >
-                
-                {/* Ingredient Image Thumbnail */}
-                <div className={twMerge("flex-shrink-0 w-14 h-14 rounded-[1.2rem] overflow-hidden ring-2 ring-white shadow-sm flex items-center justify-center relative", theme.imgBg)}>
-                  {displayImg ? (
-                    <img 
-                      src={displayImg} 
-                      alt={displayName} 
-                      className="w-full h-full object-cover group-hover/item:scale-110 group-hover/item:rotate-2 transition-all duration-500"
-                      onError={(e) => { e.target.src = 'https://via.placeholder.com/150/FADCD9/FFFFFF?text=Food' }}
-                    />
-                  ) : (
-                    <span className={twMerge("text-xs font-bold", isCompleted ? theme.chevronCompleted : theme.chevronActive)}>...</span>
-                  )}
-                  {sub && (
-                    <div className={twMerge("absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px]", theme.text)}>
-                      <RefreshCw size={14} className="text-white animate-spin-slow" />
-                    </div>
-                  )}
-                </div>
-                
-                {/* Ingredient Info */}
-                <div className={twMerge("flex-grow flex justify-between items-center bg-white/60 backdrop-blur-sm rounded-2xl px-5 py-4 border shadow-sm group-hover/item:border-gray-200 transition-colors", theme.borderSoft)}>
-                  <span className={twMerge("font-semibold capitalize text-sm flex items-center gap-2", theme.ingName)}>
-                    {displayName}
-                    {sub && <RefreshCw size={12} className={twMerge(theme.text, "opacity-50")} />}
-                  </span>
-                  <span className={twMerge("font-extrabold text-xs px-3 py-1.5 rounded-lg border", theme.ingQtyBg)}>{displayQty}</span>
-                </div>
-              </button>
+              <div key={idx} className="relative group/item flex items-center gap-4">
+                <button 
+                  onClick={() => onIngredientClick(ing)}
+                  className="flex-grow flex items-center gap-4 hover:translate-x-1 transition-transform duration-300 text-left"
+                >
+                  
+                  {/* Ingredient Image Thumbnail */}
+                  <div className={twMerge("flex-shrink-0 w-14 h-14 rounded-[1.2rem] overflow-hidden ring-2 ring-white shadow-sm flex items-center justify-center relative", theme.imgBg)}>
+                    {displayImg ? (
+                      <img 
+                        src={displayImg} 
+                        alt={displayName} 
+                        className="w-full h-full object-cover group-hover/item:scale-110 group-hover/item:rotate-2 transition-all duration-500"
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150/FADCD9/FFFFFF?text=Food' }}
+                      />
+                    ) : (
+                      <span className={twMerge("text-xs font-bold", isCompleted ? theme.chevronCompleted : theme.chevronActive)}>...</span>
+                    )}
+                    {sub && (
+                      <div className={twMerge("absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]", theme.text)}>
+                        <RefreshCw size={14} strokeWidth={3} className="text-white animate-spin-slow opacity-80" />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Ingredient Info */}
+                  <div className={twMerge("flex-grow flex justify-between items-center bg-white/60 backdrop-blur-sm rounded-2xl px-5 py-4 border shadow-sm group-hover/item:border-gray-200 transition-colors", theme.borderSoft)}>
+                    <span className={twMerge("font-semibold capitalize text-sm flex items-center gap-2", theme.ingName)}>
+                      {displayName}
+                      {sub && <RefreshCw size={12} className={twMerge(theme.text, "opacity-50")} />}
+                    </span>
+                    <span className={twMerge("font-extrabold text-xs px-3 py-1.5 rounded-lg border", theme.ingQtyBg)}>{displayQty}</span>
+                  </div>
+                </button>
+
+                {/* Reset Substitution Button */}
+                {sub && (
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onIngredientReset(ing, title);
+                    }}
+                    className={twMerge(
+                      "absolute -right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-white shadow-md border opacity-0 group-hover/item:opacity-100 transition-all duration-300 hover:scale-110 active:scale-95 z-20",
+                      theme.resetBtn
+                    )}
+                    title="Revenir à l'ingrédient original"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
             );
           })}
         </div>
@@ -180,4 +203,5 @@ export const MealCard = ({
     </div>
   );
 };
+
 

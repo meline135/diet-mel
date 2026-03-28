@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { Navbar } from './components/layout/Navbar';
 import DietPage from './pages/DietPage';
@@ -12,8 +12,8 @@ export default function App() {
   return (
     <AppProvider>
       <Router>
-        {/* Pale pink background from references */}
-        <div className="min-h-screen pb-16 flex justify-center text-gray-800 font-sans selection:bg-pink-200">
+        {/* Deep chic beige background (#F0ECE8) with matching selection color */}
+        <div className="min-h-screen pb-16 flex justify-center text-gray-800 font-sans selection:bg-[#E2DED9] selection:text-[#3C322F]">
           <main className="w-full max-w-md relative z-10 px-4">
             <Routes>
               <Route 
