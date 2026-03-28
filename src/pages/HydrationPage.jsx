@@ -65,10 +65,9 @@ export default function HydrationPage() {
     <div className="pb-24 pt-6 px-4 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-md mx-auto">
       
       {/* Header */}
-      <header className="mb-8 flex justify-between items-center">
+      <header className="mb-4 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-black text-gray-900 tracking-tight">Hydratation</h1>
-          <p className="text-gray-500 font-medium text-xs uppercase tracking-widest mt-1">Niveaux de Liquides</p>
         </div>
         
         <div className="flex bg-white/40 backdrop-blur-sm p-1 rounded-full shadow-inner ring-1 ring-black/5">
@@ -94,12 +93,12 @@ export default function HydrationPage() {
       </header>
 
       {/* Stacked Bottle Visual */}
-      <div className="relative mb-14 flex flex-col items-center">
+      <div className="relative mb-4 flex flex-col items-center scale-95 origin-top">
         
         <div className="relative flex items-end">
           
           {/* Side Indicators */}
-          <div className="absolute -left-16 flex flex-col items-end gap-0 h-72 py-1 justify-end">
+          <div className="absolute -left-11 flex flex-col items-end gap-0 h-72 py-1 justify-end">
              
              {/* Case 1: Multiple liquids -> Show Water vs Total */}
              {showDoubleLabel && (
@@ -112,7 +111,7 @@ export default function HydrationPage() {
                       <span className="text-[11px] font-black text-gray-800">{totalIntake} ml</span>
                       <span className="text-[7px] font-black text-gray-400 uppercase tracking-tighter">Total</span>
                     </div>
-                    <div className="w-8 h-[1px] bg-gray-300"></div>
+                    <div className="w-5 h-[1px] bg-gray-300"></div>
                  </div>
 
                  {liquids.Water > 0 && (
@@ -124,7 +123,7 @@ export default function HydrationPage() {
                         <span className="text-[10px] font-black text-[#5ba19f]">{liquids.Water} ml</span>
                         <span className="text-[6px] font-black text-[#89b8b6] uppercase tracking-tighter">EAU</span>
                       </div>
-                      <div className="w-8 h-[1px] bg-[#CDE8E7]"></div>
+                      <div className="w-5 h-[1px] bg-[#CDE8E7]"></div>
                    </div>
                  )}
                </>
@@ -142,7 +141,7 @@ export default function HydrationPage() {
                       {liquids.Water > 0 ? 'EAU' : Object.keys(liquids).find(k => liquids[k] > 0)}
                     </span>
                   </div>
-                  <div className="w-8 h-[1px] bg-gray-300"></div>
+                  <div className="w-5 h-[1px] bg-gray-300"></div>
                </div>
              )}
           </div>
@@ -191,7 +190,7 @@ export default function HydrationPage() {
         </div>
 
         {/* Goal Indicator & Editor Toggle */}
-        <div className="mt-8 flex flex-col items-center gap-1">
+        <div className="mt-4 flex flex-col items-center gap-1">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-gray-400 tracking-widest uppercase">
               Objectif: {goal}ml
@@ -205,7 +204,7 @@ export default function HydrationPage() {
           </div>
           
           {showGoalEditor && (
-            <div className="mt-4 flex items-center justify-center gap-4 bg-white/60 p-2 rounded-2xl border shadow-sm animate-in fade-in zoom-in duration-300">
+            <div className="mt-2 flex items-center justify-center gap-4 bg-white/60 p-2 rounded-2xl border shadow-sm animate-in fade-in zoom-in duration-300">
               <button onClick={() => adjustGoal(goal - 250)} className="w-8 h-8 rounded-full bg-white flex items-center justify-center border shadow-sm"><Minus size={14} /></button>
               <span className="font-black text-xs text-gray-700 min-w-[60px] text-center">{goal}ML</span>
               <button onClick={() => adjustGoal(goal + 250)} className="w-8 h-8 rounded-full bg-white flex items-center justify-center border shadow-sm"><Plus size={14} /></button>
@@ -215,7 +214,7 @@ export default function HydrationPage() {
       </div>
 
       {/* Controls */}
-      <div className="flex flex-col items-center gap-8 mb-12">
+      <div className="flex flex-col items-center gap-6 mb-8 mt-2">
         <div className="flex items-center gap-6 bg-white/40 p-2 rounded-full border shadow-inner relative">
            <button 
              onClick={() => setAddAmount(prev => Math.max(50, prev - 50))}
@@ -242,7 +241,7 @@ export default function HydrationPage() {
            <button 
              onClick={() => undoHydration(activeUser)}
              disabled={intakeHistory.length === 0}
-             className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white/90 text-red-400 hover:text-red-500 disabled:opacity-30 disabled:pointer-events-none px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest border shadow-md transition-all active:scale-90"
+             className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white/90 text-red-400 hover:text-red-500 disabled:opacity-30 disabled:pointer-events-none px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest border shadow-md transition-all active:scale-90 whitespace-nowrap z-30"
            >
              Retirer la boisson
            </button>
@@ -250,22 +249,22 @@ export default function HydrationPage() {
       </div>
 
       {/* Quick Add Other Drinks (2-column layout) */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3 px-2">
         {drinks.map(drink => (
           <button
             key={drink.id}
             onClick={() => addHydration(drink.id, drink.amount)}
             className={twMerge(
-              "relative h-32 flex flex-col items-center justify-center gap-1 rounded-[2.5rem] transition-all hover:scale-[1.03] active:scale-95 shadow-sm border border-transparent overflow-hidden group",
+              "relative h-28 flex flex-col items-center justify-center gap-0.5 rounded-[2rem] transition-all hover:scale-[1.03] active:scale-95 shadow-sm border border-transparent overflow-hidden group",
               drink.color
             )}
           >
             {/* Pinterest Image as rounded element */}
-            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/50 mb-1 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/50 mb-0.5 group-hover:scale-110 transition-transform">
               <img src={drink.img} alt={drink.name} className="w-full h-full object-cover" />
             </div>
             
-            <span className="font-black text-[9px] uppercase leading-tight text-center px-2">{drink.name}</span>
+            <span className="font-black text-[9px] uppercase leading-tight text-center px-1">{drink.name}</span>
             <span className="text-[8px] font-black opacity-70 tracking-tighter">+{drink.amount}ml</span>
           </button>
         ))}
@@ -273,7 +272,7 @@ export default function HydrationPage() {
 
       <button 
         onClick={() => resetDaily()}
-        className="mt-14 py-3 px-6 rounded-2xl bg-white/50 hover:bg-white border border-gray-100 shadow-sm text-[10px] font-black text-gray-400 hover:text-red-500 uppercase tracking-[0.2em] block text-center w-full transition-all active:scale-95"
+        className="mt-10 py-3 px-6 rounded-2xl bg-white/50 hover:bg-white border border-gray-100 shadow-sm text-[10px] font-black text-gray-400 hover:text-red-500 uppercase tracking-[0.2em] block text-center w-full transition-all active:scale-95"
       >
         Réinitialiser la journée
       </button>
