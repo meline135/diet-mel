@@ -44,10 +44,19 @@ export const AppProvider = ({ children }) => {
     const saved = localStorage.getItem('userStates');
     const parsed = saved ? JSON.parse(saved) : {};
     
-    // Ensure both users exist in the state
+    // Ensure both users exist in the state and handle migration from previous versions
     return {
-      mel: parsed.mel || { ...defaultUserState },
-      thomas: parsed.thomas || { ...defaultUserState }
+      mel: { ...defaultUserState, ...(parsed.mel || {}) },
+      thomas: { ...defaultUserState, ...(parsed.thomas || {}) }
+    };
+  });
+
+  // Independent state for the shopping cart (shared between users)
+  const [shoppingCart, setShoppingCart] = useState(() => {
+    const saved = localStorage.getItem('shoppingCart');
+    return saved ? JSON.parse(saved) : {
+      mel: { 1: 0, 2: 0, 3: 0, 4: 0 },
+      thomas: { 'ON': 0, 'OFF': 0 }
     };
   });
 
@@ -55,6 +64,26 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('userStates', JSON.stringify(userStates));
   }, [userStates]);
+
+  useEffect(() => {
+    localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart));
+  }, [shoppingCart]);
+
+  // --- SHOPPING CART LOGIC ---
+  const updateCart = (userId, option, delta) => {
+    setShoppingCart(prev => {
+      const userCart = { ...prev[userId] };
+      userCart[option] = Math.max(0, (userCart[option] || 0) + delta);
+      return { ...prev, [userId]: userCart };
+    });
+  };
+
+  const clearCart = () => {
+    setShoppingCart({
+      mel: { 1: 0, 2: 0, 3: 0, 4: 0 },
+      thomas: { 'ON': 0, 'OFF': 0 }
+    });
+  };
 
   // --- MIDNIGHT RESET LOGIC ---
   useEffect(() => {
@@ -203,6 +232,7 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         userStates,
+        shoppingCart,
         setGlobalOption,
         setHydrationIntake,
         undoHydration,
@@ -210,6 +240,8 @@ export const AppProvider = ({ children }) => {
         toggleMeal,
         setSubstitution,
         clearSubstitution,
+        updateCart,
+        clearCart,
         resetDaily,
       }}
     >

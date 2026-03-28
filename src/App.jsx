@@ -4,6 +4,7 @@ import { AppProvider } from './context/AppContext';
 import { Navbar } from './components/layout/Navbar';
 import DietPage from './pages/DietPage';
 import HydrationPage from './pages/HydrationPage';
+import ShoppingListPage from './pages/ShoppingListPage';
 
 const MEL_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPCZebU1Gv0st2F3VpD8WcLeqC3NZm55Ev8xYWLXijQ5nbgvpUg82izrB3PpMrrVmXxtgleuNh4WbV/pub?gid=0&single=true&output=csv';
 const THOMAS_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6xaF0JvNwMwhipjIcLgpL6U4ywwSFoBqZbKE4sHf0n5CsV7GqLe_kXXEK_brMiWE6vQOXkstEvS63/pub?gid=0&single=true&output=csv';
@@ -25,6 +26,7 @@ export default function App() {
                 element={<DietPage userId="thomas" sheetUrl={THOMAS_SHEET_URL} title="Diet Thomas" accentColor="blue" allowedOptions={['ON', 'OFF']} />} 
               />
               <Route path="/hydration" element={<HydrationPage />} />
+              <Route path="/shopping" element={<ShoppingListPage />} />
             </Routes>
           </main>
           <Navbar />

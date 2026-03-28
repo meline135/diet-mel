@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MealCategory } from '../components/nutrition/MealCategory';
 import { SubstitutionModal } from '../components/nutrition/SubstitutionModal';
+import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useSheetData } from '../hooks/useSheetData';
 import { Loader2 } from 'lucide-react';
@@ -86,14 +87,18 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
   return (
     <div className="pb-24 pt-6 px-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
-      <header className={twMerge("mb-8 mt-2 sticky top-0 z-20 backdrop-blur-md pt-4 pb-4 -mx-2 px-4", currentTheme.headerBg, currentTheme.headerShadow)}>
-        <div className="flex items-center gap-3 mb-5">
+      <header className={twMerge("mb-8 mt-2 sticky top-0 z-20 backdrop-blur-md pt-4 pb-4 -mx-2 px-4 flex flex-col gap-5", currentTheme.headerBg, currentTheme.headerShadow)}>
+        <div className="flex items-center justify-between gap-4">
           <h1 className="text-3xl font-black text-gray-900 tracking-tight">{title}</h1>
-          <img 
-            src={userId === 'mel' ? melAvatar : thomasAvatar} 
-            alt={userId} 
-            className="h-10 w-auto object-contain"
-          />
+
+          {/* Single User Avatar (Replacing the Switcher) */}
+          <div className="w-14 h-14 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 flex items-center justify-center overflow-hidden">
+            <img 
+              src={userId === 'mel' ? melAvatar : thomasAvatar} 
+              alt={userId} 
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
 
         {/* Global Option Selector Tabs */}

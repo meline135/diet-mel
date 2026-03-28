@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { CupSoda, Coffee, Droplets, Plus, Minus, Settings2 } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
+import melAvatar from '../assets/mel-avatar.png';
+import thomasAvatar from '../assets/thomas-avatar.png';
 
 export default function HydrationPage() {
   const { userStates, setHydrationIntake, undoHydration, setHydrationGoal, resetDaily } = useAppContext();
@@ -74,20 +76,22 @@ export default function HydrationPage() {
           <button 
             onClick={() => setActiveUser('mel')}
             className={twMerge(
-              "px-4 py-2 rounded-full text-xs font-black transition-all duration-300",
+              "pl-4 pr-1.5 py-1.5 rounded-full text-xs font-black transition-all duration-300 flex items-center gap-2",
               activeUser === 'mel' ? "bg-pink-500 text-white shadow-lg scale-105" : "text-gray-400"
             )}
           >
             MEL
+            <img src={melAvatar} alt="Mel" className="w-6 h-6 rounded-full border border-white/20 object-cover" />
           </button>
           <button 
             onClick={() => setActiveUser('thomas')}
             className={twMerge(
-              "px-4 py-2 rounded-full text-xs font-black transition-all duration-300",
+              "pl-4 pr-1.5 py-1.5 rounded-full text-xs font-black transition-all duration-300 flex items-center gap-2",
               activeUser === 'thomas' ? "bg-[#3A8EBA] text-white shadow-lg scale-105" : "text-gray-400"
             )}
           >
             THOMAS
+            <img src={thomasAvatar} alt="Thomas" className="w-6 h-6 rounded-full border border-white/20 object-cover" />
           </button>
         </div>
       </header>
