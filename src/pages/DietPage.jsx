@@ -87,15 +87,12 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
     <div className="pb-24 pt-6 px-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       <header className={twMerge("mb-8 mt-2 sticky top-0 z-20 backdrop-blur-md pt-4 pb-4 -mx-2 px-4", currentTheme.headerBg, currentTheme.headerShadow)}>
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3 mb-5">
           <h1 className="text-3xl font-black text-gray-900 tracking-tight">{title}</h1>
           <img 
             src={userId === 'mel' ? melAvatar : thomasAvatar} 
             alt={userId} 
-            className={twMerge(
-              "w-12 h-12 rounded-full border-2 border-white shadow-md",
-              userId === 'mel' ? "ring-2 ring-pink-200/50" : "ring-2 ring-blue-200/50"
-            )}
+            className="h-10 w-auto object-contain"
           />
         </div>
 
