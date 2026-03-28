@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { CupSoda, Coffee, Droplets, Plus, Minus, Settings2 } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
+import melAvatar from '../assets/mel-avatar.png';
+import thomasAvatar from '../assets/thomas-avatar.png';
 
 export default function HydrationPage() {
   const { userStates, setHydrationIntake, undoHydration, setHydrationGoal, resetDaily } = useAppContext();
@@ -74,20 +76,22 @@ export default function HydrationPage() {
           <button 
             onClick={() => setActiveUser('mel')}
             className={twMerge(
-              "px-4 py-2 rounded-full text-xs font-black transition-all duration-300",
+              "pl-4 pr-1.5 py-1.5 rounded-full text-xs font-black transition-all duration-300 flex items-center gap-2",
               activeUser === 'mel' ? "bg-pink-500 text-white shadow-lg scale-105" : "text-gray-400"
             )}
           >
             MEL
+            <img src={melAvatar} alt="Mel" className="w-6 h-6 rounded-full border border-white/30" />
           </button>
           <button 
             onClick={() => setActiveUser('thomas')}
             className={twMerge(
-              "px-4 py-2 rounded-full text-xs font-black transition-all duration-300",
+              "pl-4 pr-1.5 py-1.5 rounded-full text-xs font-black transition-all duration-300 flex items-center gap-2",
               activeUser === 'thomas' ? "bg-[#3A8EBA] text-white shadow-lg scale-105" : "text-gray-400"
             )}
           >
             THOMAS
+            <img src={thomasAvatar} alt="Thomas" className="w-6 h-6 rounded-full border border-white/30" />
           </button>
         </div>
       </header>
@@ -98,32 +102,38 @@ export default function HydrationPage() {
         <div className="relative flex items-end">
           
           {/* Side Indicators */}
-          <div className="absolute -left-11 flex flex-col items-end gap-0 h-72 py-1 justify-end">
+          <div className="absolute -left-10 flex flex-col items-end gap-0 h-72 py-1 justify-end">
              
              {/* Case 1: Multiple liquids -> Show Water vs Total */}
              {showDoubleLabel && (
                <>
                  <div 
-                   className="absolute transition-all duration-1000 ease-out flex items-center gap-2 pr-2"
+                   className="absolute transition-all duration-1000 ease-out flex items-center gap-1.5 pr-1.5"
                    style={{ bottom: `${totalPercentage}%` }}
                  >
                     <div className="flex flex-col items-end leading-none">
-                      <span className="text-[11px] font-black text-gray-800">{totalIntake} ml</span>
+                      <div className="flex items-baseline gap-0.5">
+                        <span className="text-[13px] font-black text-gray-800">{totalIntake}</span>
+                        <span className="text-[8px] font-black text-gray-500 uppercase">ml</span>
+                      </div>
                       <span className="text-[7px] font-black text-gray-400 uppercase tracking-tighter">Total</span>
                     </div>
-                    <div className="w-5 h-[1px] bg-gray-300"></div>
+                    <div className="w-3 h-[1.5px] bg-gray-300 rounded-full"></div>
                  </div>
 
                  {liquids.Water > 0 && (
                    <div 
-                     className="absolute transition-all duration-1000 ease-out flex items-center gap-2 pr-2 opacity-60"
+                     className="absolute transition-all duration-1000 ease-out flex items-center gap-1.5 pr-1.5 opacity-60"
                      style={{ bottom: `${waterPercentage}%` }}
                    >
                       <div className="flex flex-col items-end leading-none">
-                        <span className="text-[10px] font-black text-[#5ba19f]">{liquids.Water} ml</span>
+                        <div className="flex items-baseline gap-0.5">
+                          <span className="text-[12px] font-black text-[#5ba19f]">{liquids.Water}</span>
+                          <span className="text-[7px] font-black text-[#5ba19f] uppercase">ml</span>
+                        </div>
                         <span className="text-[6px] font-black text-[#89b8b6] uppercase tracking-tighter">EAU</span>
                       </div>
-                      <div className="w-5 h-[1px] bg-[#CDE8E7]"></div>
+                      <div className="w-3 h-[1px] bg-[#CDE8E7] rounded-full"></div>
                    </div>
                  )}
                </>
@@ -132,16 +142,19 @@ export default function HydrationPage() {
              {/* Case 2: Only one liquid -> Show only that label */}
              {showSingleLabel && (
                <div 
-                 className="absolute transition-all duration-1000 ease-out flex items-center gap-2 pr-2"
+                 className="absolute transition-all duration-1000 ease-out flex items-center gap-1.5 pr-1.5"
                  style={{ bottom: `${totalPercentage}%` }}
                >
                   <div className="flex flex-col items-end leading-none">
-                    <span className="text-[11px] font-black text-gray-800">{totalIntake} ml</span>
+                    <div className="flex items-baseline gap-0.5">
+                      <span className="text-[13px] font-black text-gray-800">{totalIntake}</span>
+                      <span className="text-[8px] font-black text-gray-500 uppercase">ml</span>
+                    </div>
                     <span className="text-[7px] font-black text-gray-400 uppercase tracking-tighter">
                       {liquids.Water > 0 ? 'EAU' : Object.keys(liquids).find(k => liquids[k] > 0)}
                     </span>
                   </div>
-                  <div className="w-5 h-[1px] bg-gray-300"></div>
+                  <div className="w-3 h-[1.5px] bg-gray-300 rounded-full"></div>
                </div>
              )}
           </div>
