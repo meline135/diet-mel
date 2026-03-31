@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MealCategory } from '../components/nutrition/MealCategory';
 import { SubstitutionModal } from '../components/nutrition/SubstitutionModal';
-import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useSheetData } from '../hooks/useSheetData';
-import { Loader2 } from 'lucide-react';
-import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Loader2 } from 'lucide-react';
 
