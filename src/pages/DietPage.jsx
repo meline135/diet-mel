@@ -4,7 +4,7 @@ import { SubstitutionModal } from '../components/nutrition/SubstitutionModal';
 import { useAppContext } from '../context/AppContext';
 import { useSheetData } from '../hooks/useSheetData';
 import { twMerge } from 'tailwind-merge';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Heart } from 'lucide-react';
 
 export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink', allowedOptions = [1, 2, 3, 4] }) {
   const { userStates, setGlobalOption, setSubstitution, clearSubstitution } = useAppContext();
