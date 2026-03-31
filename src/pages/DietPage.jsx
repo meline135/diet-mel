@@ -7,8 +7,7 @@ import { useSheetData } from '../hooks/useSheetData';
 import { Loader2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import melAvatar from '../assets/mel-avatar.png';
-import thomasAvatar from '../assets/thomas-avatar.png';
+import { Loader2 } from 'lucide-react';
 
 export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink', allowedOptions = [1, 2, 3, 4] }) {
   const { userStates, setGlobalOption, setSubstitution, clearSubstitution } = useAppContext();
@@ -85,35 +84,27 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
   const currentTheme = themeStyles[accentColor] || themeStyles.pink;
 
   return (
-    <div className="pb-24 pt-6 px-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="pb-32 pt-8 px-4 animate-in fade-in slide-in-from-bottom-6 duration-700">
       
-      <header className={twMerge("mb-8 mt-2 sticky top-0 z-20 backdrop-blur-md pt-4 pb-4 -mx-2 px-4 flex flex-col gap-5", currentTheme.headerBg, currentTheme.headerShadow)}>
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="text-3xl font-black text-gray-900 tracking-tight">{title}</h1>
-
-          {/* Single User Avatar (Replacing the Switcher) */}
-          <div className="w-14 h-14 rounded-2xl bg-white shadow-sm ring-1 ring-black/5 flex items-center justify-center overflow-hidden">
-            <img 
-              src={userId === 'mel' ? melAvatar : thomasAvatar} 
-              alt={userId} 
-              className="w-full h-full object-cover"
-            />
+      <header className="mb-12 sticky top-0 z-20 backdrop-blur-3xl bg-white/40 pt-6 pb-6 -mx-4 px-6 flex flex-col gap-6 border-b border-white/20 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-black text-brand-brown tracking-tighter leading-none">{title}</h1>
+          <div className="w-12 h-12 rounded-2xl bg-white/50 backdrop-blur-lg shadow-sm border border-white/40 flex items-center justify-center">
+            <Heart size={24} className="text-brand-pink fill-brand-pink/20" />
           </div>
         </div>
 
         {/* Global Option Selector Tabs */}
-        <div className="flex justify-between items-center gap-2 bg-white/40 p-1.5 rounded-full ring-1 ring-white/60 shadow-inner">
+        <div className="flex justify-between items-center gap-2 bg-white/50 backdrop-blur-xl p-1.5 rounded-[2rem] shadow-[0_10px_30px_rgba(59,47,47,0.05)] border border-white/30">
           {allowedOptions.map((opt) => (
             <button
               key={opt}
               onClick={() => setGlobalOption(userId, opt)}
               className={twMerge(
-                clsx(
-                  "flex-1 py-3 rounded-full text-xs font-black uppercase tracking-tighter transition-all duration-300",
-                  String(globalOption) === String(opt) 
-                  ? `${currentTheme.btnActive} text-white shadow-lg scale-105` 
-                  : "text-gray-500 hover:bg-white/50"
-                )
+                "flex-1 py-3 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest transition-all duration-300",
+                String(globalOption) === String(opt) 
+                ? "bg-brand-pink text-white shadow-lg shadow-brand-pink/30 scale-105" 
+                : "text-brand-brown/40"
               )}
             >
               {typeof opt === 'number' ? `Opt ${opt}` : opt}
@@ -128,19 +119,35 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
           <p>Aucun repas trouvé. Vérifiez la structure de votre tableau.</p>
         </div>
       ) : (
-        <div className="space-y-10 mt-6">
-          {mealCategories.map(([mealType, optionsArray]) => (
-            <MealCategory 
-              key={mealType} 
-              title={mealType} 
-              optionsData={optionsArray}
-              userId={userId}
-              accentColor={accentColor}
-              onIngredientClick={handleIngredientClick}
-              onIngredientReset={handleIngredientReset}
-              substitutions={substitutions}
-            />
-          ))}
+        <div className="relative overflow-hidden">
+          {/* Background Decor - Floating Fruits */}
+          <div className="absolute -right-20 top-20 w-40 h-40 opacity-10 pointer-events-none blur-[1px] float">
+            <img src="/Users/macdememe/.gemini/antigravity/brain/97f44df9-df67-4524-a9d6-2515850cffd0/strawberry_transparent_1774997303509.png" alt="" className="w-full h-full object-contain" />
+          </div>
+          <div className="absolute -left-20 top-[400px] w-48 h-48 opacity-10 pointer-events-none blur-[2px] float-slow">
+            <img src="/Users/macdememe/.gemini/antigravity/brain/97f44df9-df67-4524-a9d6-2515850cffd0/lemon_slice_transparent_1774997273386.png" alt="" className="w-full h-full object-contain" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+            {mealCategories.map(([mealType, optionsArray], idx) => {
+               // Asymmetrical rhythm
+               const isFeatured = idx === 0 || idx === 3;
+               return (
+                 <div key={mealType} className={twMerge(isFeatured ? "md:col-span-2" : "col-span-1")}>
+                   <MealCategory 
+                     title={mealType} 
+                     optionsData={optionsArray}
+                     userId={userId}
+                     accentColor={accentColor}
+                     onIngredientClick={handleIngredientClick}
+                     onIngredientReset={handleIngredientReset}
+                     substitutions={substitutions}
+                     isFeatured={isFeatured}
+                   />
+                 </div>
+               );
+            })}
+          </div>
         </div>
       )}
 

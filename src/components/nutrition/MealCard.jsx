@@ -11,129 +11,81 @@ export const MealCard = ({
   accentColor = 'pink',
   onIngredientClick = () => {},
   onIngredientReset = () => {},
-  substitutions = {}
+  substitutions = {},
+  isFeatured = false
 }) => {
-  // Local state to manage expanding/collapsing
   const [isOpen, setIsOpen] = useState(!isCompleted);
-
-  // Automatically close when ticked, and open if unticked
-  useEffect(() => {
-    if (isCompleted) {
-      setIsOpen(false);
-    } else {
-      setIsOpen(true);
-    }
-  }, [isCompleted]);
-
-  const handleHeaderClick = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleCheckboxClick = (e) => {
-    e.stopPropagation(); // Prevent the header click event from firing
-    onToggleComplete();
-  };
+  useEffect(() => { setIsOpen(!isCompleted); }, [isCompleted]);
 
   const themes = {
     pink: {
-      cardCompleted: "bg-gradient-to-br from-pink-50 to-white ring-pink-200/50",
-      cardActive: "bg-white shadow-[0_10px_40px_-10px_rgba(236,72,153,0.15)] ring-pink-100/60",
-      borderSoft: "border-pink-50/50",
-      textCompleted: "text-pink-300 decoration-pink-200",
-      textActive: "text-pink-500",
-      chevronCompleted: "text-pink-300",
-      chevronActive: "text-pink-400",
-      checkCompleted: "bg-gradient-to-tr from-pink-500 to-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.5)]",
-      checkActive: "border-pink-300 hover:bg-pink-50",
-      imgBg: "bg-pink-50",
-      ingName: "text-gray-700",
-      ingQtyBg: "text-pink-400 bg-pink-50/80 border-pink-100/50",
-      resetBtn: "text-pink-400 hover:text-red-500 hover:bg-red-50"
+      card: "bg-white/70 backdrop-blur-xl border-white/20 shadow-[0_25px_60px_rgba(255,138,155,0.1)]",
+      titleActive: "text-brand-pink",
+      titleDone: "text-brand-pink/30",
+      checkDone: "bg-brand-pink shadow-lg shadow-brand-pink/40",
+      checkActive: "border-brand-pink/30",
+      ingBg: "bg-brand-pink/5",
+      qty: "bg-brand-pink/10 text-brand-pink border-brand-pink/20"
     },
     blue: {
-      cardCompleted: "bg-gradient-to-br from-blue-50 to-white ring-blue-200/50",
-      cardActive: "bg-white shadow-[0_10px_40px_-10px_rgba(58,142,186,0.15)] ring-blue-100/60",
-      borderSoft: "border-blue-50/50",
-      textCompleted: "text-blue-300 decoration-blue-200",
-      textActive: "text-[#3A8EBA]",
-      chevronCompleted: "text-blue-300",
-      chevronActive: "text-blue-400",
-      checkCompleted: "bg-gradient-to-tr from-[#3A8EBA] to-[#5ba9d4] shadow-[0_0_15px_rgba(58,142,186,0.5)]",
-      checkActive: "border-blue-300 hover:bg-blue-50",
-      imgBg: "bg-blue-50",
-      ingName: "text-gray-700",
-      ingQtyBg: "text-[#3A8EBA] bg-blue-50/80 border-blue-100/50",
-      resetBtn: "text-[#3A8EBA] hover:text-red-500 hover:bg-red-50"
+      card: "bg-white/70 backdrop-blur-xl border-white/20 shadow-[0_25px_60px_rgba(58,142,186,0.1)]",
+      titleActive: "text-brand-blue",
+      titleDone: "text-brand-blue/30",
+      checkDone: "bg-brand-blue shadow-lg shadow-brand-blue/40",
+      checkActive: "border-brand-blue/30",
+      ingBg: "bg-brand-blue/5",
+      qty: "bg-brand-blue/10 text-brand-blue border-brand-blue/20"
     }
   };
 
   const theme = themes[accentColor] || themes.pink;
 
   return (
-    <div className={twMerge(clsx(
-      "relative flex flex-col w-full rounded-3xl transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] mb-4 overflow-hidden group",
-      isCompleted 
-        ? `${theme.cardCompleted} scale-[0.98] opacity-95` 
-        : `${theme.cardActive} scale-100`
-    ))}>
-      
-      {/* Card Header (Clickable to expand/collapse) */}
+    <div className={twMerge(
+      "relative flex flex-col w-full rounded-[3rem] transition-all duration-500 mb-8 overflow-hidden border",
+      isCompleted ? "opacity-70 grayscale-[0.2] scale-[0.98]" : theme.card,
+      isFeatured ? "md:min-h-[400px]" : ""
+    )}>
       <div 
-        onClick={handleHeaderClick}
-        className={twMerge(clsx(
-          "relative z-10 flex justify-between items-center p-6 cursor-pointer select-none transition-all duration-500",
-          isOpen ? `border-b ${theme.borderSoft}` : ""
-        ))}
+        onClick={() => setIsOpen(!isOpen)}
+        className={twMerge(
+          "flex justify-between items-center p-8 cursor-pointer select-none", 
+          isOpen && "border-b border-brand-brown/5",
+          isFeatured && "pt-12 pb-8"
+        )}
       >
-        <div className="flex items-center gap-3">
-          <h3 className={twMerge(clsx(
-            "text-2xl font-black capitalize tracking-tight transition-all duration-500",
-            isCompleted ? `${theme.textCompleted} line-through decoration-2 translate-x-1` : theme.textActive
-          ))}>
-            {title}
-          </h3>
-          <ChevronDown 
-            size={20} 
-            className={twMerge(clsx(
-              "transition-transform duration-500",
-              isCompleted ? theme.chevronCompleted : theme.chevronActive,
-              isOpen ? "rotate-180" : "rotate-0"
-            ))} 
-          />
+        <div className="flex items-center gap-4">
+          <div className="flex flex-col">
+            {isFeatured && !isCompleted && (
+              <span className="text-[10px] font-black text-brand-orange uppercase tracking-[0.3em] mb-2">Featured Meal</span>
+            )}
+            <h3 className={twMerge(
+              "font-black transition-all duration-500 tracking-tighter leading-none",
+              isCompleted ? `${theme.titleDone} line-through text-2xl` : `${theme.titleActive} text-4xl`,
+              isFeatured && !isCompleted ? "text-5xl" : ""
+            )}>
+              {title}
+            </h3>
+          </div>
+          <ChevronDown size={24} className={twMerge("transition-transform duration-500", isOpen && "rotate-180", isCompleted ? "opacity-30" : "opacity-50")} />
         </div>
         
-        {/* Interactive Checkbox with pop animation */}
         <button 
-          onClick={handleCheckboxClick}
-          className={twMerge(clsx(
-            "w-9 h-9 rounded-full border-2 flex items-center justify-center transition-all duration-500 focus:outline-none z-10",
-            isCompleted 
-              ? `${theme.checkCompleted} border-none text-white scale-110 rotate-[360deg]` 
-              : `${theme.checkActive} bg-white text-transparent hover:scale-105 active:scale-95`
-          ))}
-          aria-label={isCompleted ? "Marquer comme non consommé" : "Marquer comme consommé"}
+          onClick={(e) => { e.stopPropagation(); onToggleComplete(); }}
+          className={twMerge(
+            "w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500",
+            isCompleted ? `${theme.checkDone} border-none text-white rotate-[360deg]` : `${theme.checkActive} bg-white text-transparent shadow-sm`
+          )}
         >
-          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.5" d="M5 13l4 4L19 7" />
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
           </svg>
         </button>
       </div>
 
-      {/* Collapsible Ingredient List */}
-      <div 
-        className={twMerge(clsx(
-          "transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-top",
-          isOpen 
-            ? "max-h-[1000px] opacity-100 p-6 pt-2" 
-            : "max-h-0 opacity-0 overflow-hidden px-6 py-0 scale-y-95"
-        ))}
-      >
-        <div className={twMerge(clsx(
-          "space-y-4 transition-opacity duration-500 delay-100", 
-          isCompleted && "opacity-70"
-        ))}>
+      <div className={twMerge("transition-all duration-500 overflow-hidden", isOpen ? "max-h-[1500px] p-8 pt-4" : "max-h-0")}>
+        <div className={twMerge("grid gap-5", isFeatured ? "md:grid-cols-2" : "grid-cols-1")}>
           {ingredients.map((ing, idx) => {
-            // Check for substitution
             const subKey = `${title}-${ing.name}`;
             const sub = substitutions[subKey];
             const displayName = sub ? (sub.Food_Name || sub.food_name) : ing.name;
@@ -141,65 +93,45 @@ export const MealCard = ({
             const displayImg = sub ? (sub.Image_URL || sub.image_url) : ing.imageUrl;
 
             return (
-              <div key={idx} className="relative group/item flex items-center gap-4">
+              <div key={idx} className="flex items-center gap-5 group">
                 <button 
                   onClick={() => onIngredientClick(ing)}
-                  className="flex-grow flex items-center gap-4 hover:translate-x-1 transition-transform duration-300 text-left"
+                  className="flex-grow flex items-center gap-5 hover:translate-x-2 transition-transform"
                 >
-                  
-                  {/* Ingredient Image Thumbnail */}
-                  <div className={twMerge("flex-shrink-0 w-14 h-14 rounded-[1.2rem] overflow-hidden ring-2 ring-white shadow-sm flex items-center justify-center relative", theme.imgBg)}>
+                  <div className={twMerge("flex-shrink-0 w-16 h-16 rounded-[2rem] overflow-hidden ring-4 ring-white shadow-md flex items-center justify-center relative", theme.ingBg)}>
                     {displayImg ? (
-                      <img 
-                        src={displayImg} 
-                        alt={displayName} 
-                        className="w-full h-full object-cover group-hover/item:scale-110 group-hover/item:rotate-2 transition-all duration-500"
-                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150/FADCD9/FFFFFF?text=Food' }}
-                      />
+                      <img src={displayImg} alt={displayName} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     ) : (
-                      <span className={twMerge("text-xs font-bold", isCompleted ? theme.chevronCompleted : theme.chevronActive)}>...</span>
-                    )}
-                    {sub && (
-                      <div className={twMerge("absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]", theme.text)}>
-                        <RefreshCw size={14} strokeWidth={3} className="text-white animate-spin-slow opacity-80" />
-                      </div>
+                      <span className="text-xl">🥗</span>
                     )}
                   </div>
                   
-                  {/* Ingredient Info */}
-                  <div className={twMerge("flex-grow flex justify-between items-center bg-white/60 backdrop-blur-sm rounded-2xl px-5 py-4 border shadow-sm group-hover/item:border-gray-200 transition-colors", theme.borderSoft)}>
-                    <span className={twMerge("font-semibold capitalize text-sm flex items-center gap-2", theme.ingName)}>
+                  <div className="flex-grow flex justify-between items-center bg-white/50 backdrop-blur-sm rounded-[2rem] px-6 py-5 border border-brand-brown/5 shadow-sm group-hover:shadow-md transition-all relative">
+                    <span className="font-bold text-base text-brand-brown capitalize leading-none flex items-center gap-2">
                       {displayName}
-                      {sub && <RefreshCw size={12} className={twMerge(theme.text, "opacity-50")} />}
+                      {sub && <RefreshCw size={14} className="text-brand-pink/50 animate-spin-slow" />}
                     </span>
-                    <span className={twMerge("font-extrabold text-xs px-3 py-1.5 rounded-lg border", theme.ingQtyBg)}>{displayQty}</span>
+                    <span className={twMerge("font-black text-[10px] px-4 py-2 rounded-full border uppercase tracking-widest", theme.qty)}>{displayQty}</span>
+                    
+                    {sub && (
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onIngredientReset(ing, title);
+                        }}
+                        className="absolute -right-2 -top-2 w-8 h-8 rounded-full bg-white shadow-lg border border-brand-brown/5 flex items-center justify-center text-red-400 hover:text-red-500 hover:scale-110 active:scale-95 transition-all z-20"
+                        title="Revenir à l'original"
+                      >
+                        <RefreshCw size={12} />
+                      </button>
+                    )}
                   </div>
                 </button>
-
-                {/* Reset Substitution Button */}
-                {sub && (
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onIngredientReset(ing, title);
-                    }}
-                    className={twMerge(
-                      "absolute -right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-white shadow-md border opacity-0 group-hover/item:opacity-100 transition-all duration-300 hover:scale-110 active:scale-95 z-20",
-                      theme.resetBtn
-                    )}
-                    title="Revenir à l'ingrédient original"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                )}
               </div>
             );
           })}
         </div>
       </div>
-      
     </div>
   );
 };

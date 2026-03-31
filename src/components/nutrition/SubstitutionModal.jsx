@@ -76,10 +76,10 @@ export const SubstitutionModal = ({
       />
       
       {/* Modal Content */}
-      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 slide-in-from-bottom-10 duration-500 ease-out">
+      <div className="relative w-full max-w-md bg-white/70 backdrop-blur-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 slide-in-from-bottom-10 duration-500 ease-out border border-white/20">
         
         {/* Header */}
-        <header className={twMerge("p-6 text-white relative", theme.bg)}>
+        <header className={twMerge("p-6 text-white relative bg-opacity-80 backdrop-blur-md", theme.bg)}>
           <button 
             onClick={onClose}
             className="absolute top-6 right-6 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"

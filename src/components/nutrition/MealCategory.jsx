@@ -10,7 +10,8 @@ export const MealCategory = ({
   accentColor = 'pink',
   onIngredientClick = () => {},
   onIngredientReset = () => {},
-  substitutions = {}
+  substitutions = {},
+  isFeatured = false
 }) => {
   const { userStates, toggleMeal } = useAppContext();
   
@@ -18,7 +19,6 @@ export const MealCategory = ({
   const globalOption = currentUserState.globalOption;
   const isCompleted = currentUserState.completedMeals?.[title] || false;
 
-  // Find the data for the currently selected global tab option.
   const activeOption = optionsData.find(opt => String(opt.optionNumber) === String(globalOption));
 
   const errorTheme = {
@@ -27,8 +27,7 @@ export const MealCategory = ({
   };
 
   return (
-    <div className="mb-6 relative px-1">
-      {/* Show only the active option, or a message if it's missing for some reason */}
+    <div className={twMerge("mb-6 relative", isFeatured ? "md:mb-12" : "md:col-span-1")}>
       <div className="w-full">
         {activeOption ? (
            <MealCard
@@ -40,6 +39,7 @@ export const MealCategory = ({
              onIngredientClick={(ing) => onIngredientClick(ing, title)}
              onIngredientReset={onIngredientReset}
              substitutions={substitutions}
+             isFeatured={isFeatured}
            />
         ) : (
           <div className={twMerge("p-6 rounded-2xl text-center border-dashed border-2", errorTheme[accentColor] || errorTheme.pink)}>

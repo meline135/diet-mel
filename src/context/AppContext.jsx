@@ -51,39 +51,16 @@ export const AppProvider = ({ children }) => {
     };
   });
 
-  // Independent state for the shopping cart (shared between users)
-  const [shoppingCart, setShoppingCart] = useState(() => {
-    const saved = localStorage.getItem('shoppingCart');
-    return saved ? JSON.parse(saved) : {
-      mel: { 1: 0, 2: 0, 3: 0, 4: 0 },
-      thomas: { 'ON': 0, 'OFF': 0 }
-    };
-  });
+
 
   // Save states to LocalStorage
   useEffect(() => {
     localStorage.setItem('userStates', JSON.stringify(userStates));
   }, [userStates]);
 
-  useEffect(() => {
-    localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart));
-  }, [shoppingCart]);
 
-  // --- SHOPPING CART LOGIC ---
-  const updateCart = (userId, option, delta) => {
-    setShoppingCart(prev => {
-      const userCart = { ...prev[userId] };
-      userCart[option] = Math.max(0, (userCart[option] || 0) + delta);
-      return { ...prev, [userId]: userCart };
-    });
-  };
 
-  const clearCart = () => {
-    setShoppingCart({
-      mel: { 1: 0, 2: 0, 3: 0, 4: 0 },
-      thomas: { 'ON': 0, 'OFF': 0 }
-    });
-  };
+
 
   // --- MIDNIGHT RESET LOGIC ---
   useEffect(() => {
@@ -232,7 +209,6 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         userStates,
-        shoppingCart,
         setGlobalOption,
         setHydrationIntake,
         undoHydration,
@@ -240,8 +216,6 @@ export const AppProvider = ({ children }) => {
         toggleMeal,
         setSubstitution,
         clearSubstitution,
-        updateCart,
-        clearCart,
         resetDaily,
       }}
     >
