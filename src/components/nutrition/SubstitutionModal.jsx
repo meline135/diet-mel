@@ -150,7 +150,7 @@ export const SubstitutionModal = ({
                     </p>
                   </div>
                 </div>
-                <div className={twMerge("w-8 h-8 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100", theme.bg, "text-white")}>
+                <div className={twMerge("w-8 h-8 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 shrink-0", theme.bg, "text-white")}>
                   <Check size={16} strokeWidth={3} />
                 </div>
               </button>

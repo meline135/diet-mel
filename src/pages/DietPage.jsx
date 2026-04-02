@@ -83,7 +83,7 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
   return (
     <div className="pb-32 pt-8 px-4 animate-in fade-in slide-in-from-bottom-6 duration-700">
       
-      <header className="mb-12 sticky top-0 z-20 backdrop-blur-3xl bg-white/40 pt-6 pb-6 -mx-4 px-6 flex flex-col gap-6 border-b border-white/20 shadow-sm">
+      <header className="mb-12 sticky top-0 z-20 backdrop-blur-md bg-white/5 pt-6 pb-6 -mx-4 px-6 flex flex-col gap-6 border-b border-white/10 shadow-sm">
         <div className="flex items-center justify-between">
           <h1 className="text-4xl font-black text-brand-brown tracking-tighter leading-none">{title}</h1>
           <div className="w-12 h-12 rounded-2xl bg-white/50 backdrop-blur-lg shadow-sm border border-white/40 flex items-center justify-center">

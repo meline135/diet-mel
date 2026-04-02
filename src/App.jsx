@@ -16,7 +16,7 @@ export default function App() {
       <Router>
         {/* Deep chic beige background (#F0ECE8) with matching selection color */}
         <div className="min-h-screen pb-16 flex justify-center text-gray-800 font-sans selection:bg-[#E2DED9] selection:text-[#3C322F]">
-          <main className="w-full max-w-md relative z-10 px-4">
+          <main className="w-full max-w-md relative z-10 px-4 bg-white/30 backdrop-blur-[50px] shadow-2xl border-x border-white/10 min-h-screen">
             <Routes>
               <Route 
                 path="/" 

@@ -58,13 +58,13 @@ export default function HydrationPage() {
   const showDoubleLabel = activeLiquidsCount >= 1;
 
   return (
-    <div className="pb-32 pt-8 px-4 animate-in fade-in slide-in-from-bottom-6 duration-700 max-w-md mx-auto">
+    <div className="pb-32 pt-8 px-0 animate-in fade-in slide-in-from-bottom-6 duration-700">
       
       {/* Header */}
       <header className="mb-8 flex justify-between items-center">
         <h1 className="text-4xl font-black text-brand-brown tracking-tighter leading-none">Eau</h1>
         
-        <div className="flex bg-white/50 backdrop-blur-xl p-1 rounded-full shadow-sm border border-white/20">
+        <div className="flex bg-white/10 p-1 rounded-full border border-white/10 shadow-sm">
           <button 
             onClick={() => setActiveUser('mel')}
             className={twMerge(
@@ -147,7 +147,7 @@ export default function HydrationPage() {
       </div>
 
       <div className="flex flex-col items-center gap-10 mb-12">
-        <div className="flex items-center gap-8 bg-white/50 backdrop-blur-xl p-4 rounded-[4rem] border border-white/30 shadow-2xl relative">
+        <div className="flex items-center gap-8 bg-white/10 p-4 rounded-[4rem] border border-white/10 shadow-xl relative">
            <button onClick={() => setAddAmount(prev => Math.max(50, prev - 50))} className="w-14 h-14 rounded-full bg-brand-cream/50 flex items-center justify-center text-brand-brown hover:scale-110 active:scale-95 transition-all">
              <Minus size={24} strokeWidth={3} />
            </button>

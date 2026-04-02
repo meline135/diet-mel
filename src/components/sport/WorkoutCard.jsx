@@ -6,7 +6,7 @@ export const WorkoutCard = ({ exercise, isFeatured = false }) => {
   const { name, setsReps, rir, tips, imageUrl } = exercise;
 
   return (
-    <div className="relative bg-white/70 backdrop-blur-xl rounded-[3rem] p-8 shadow-[0_40px_100px_rgba(59,47,47,0.06)] border border-white/20 transition-all duration-500 hover:shadow-[0_50px_120px_rgba(59,47,47,0.1)] group w-full">
+    <div className="relative bg-white/10 rounded-[3rem] p-8 shadow-[0_40px_100px_rgba(59,47,47,0.03)] border border-white/20 transition-all duration-500 hover:shadow-[0_50px_120px_rgba(59,47,47,0.06)] group w-full">
       
       {/* Main Grid Layout - Less Academic */}
       <div className="flex flex-col gap-8">

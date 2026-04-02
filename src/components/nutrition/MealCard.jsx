@@ -19,7 +19,7 @@ export const MealCard = ({
 
   const themes = {
     pink: {
-      card: "bg-white/70 backdrop-blur-xl border-white/20 shadow-[0_25px_60px_rgba(255,138,155,0.1)]",
+      card: "bg-white/10 border-white/20 shadow-[0_20px_50px_rgba(255,138,155,0.05)]",
       titleActive: "text-brand-pink",
       titleDone: "text-brand-pink/30",
       checkDone: "bg-brand-pink shadow-lg shadow-brand-pink/40",
@@ -28,7 +28,7 @@ export const MealCard = ({
       qty: "bg-brand-pink/10 text-brand-pink border-brand-pink/20"
     },
     blue: {
-      card: "bg-white/70 backdrop-blur-xl border-white/20 shadow-[0_25px_60px_rgba(58,142,186,0.1)]",
+      card: "bg-white/10 border-white/20 shadow-[0_20px_50px_rgba(58,142,186,0.05)]",
       titleActive: "text-brand-blue",
       titleDone: "text-brand-blue/30",
       checkDone: "bg-brand-blue shadow-lg shadow-brand-blue/40",
@@ -72,7 +72,7 @@ export const MealCard = ({
         <button 
           onClick={(e) => { e.stopPropagation(); onToggleComplete(); }}
           className={twMerge(
-            "w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500",
+            "w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 shrink-0",
             isCompleted ? `${theme.checkDone} border-none text-white rotate-[360deg]` : `${theme.checkActive} bg-white text-transparent shadow-sm`
           )}
         >
