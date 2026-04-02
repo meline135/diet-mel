@@ -27,7 +27,7 @@ export const MealCategory = ({
   };
 
   return (
-    <div className={twMerge("mb-6 relative", isFeatured ? "md:mb-12" : "md:col-span-1")}>
+    <div className={twMerge("mb-6 relative", "w-full")}>
       <div className="w-full">
         {activeOption ? (
            <MealCard

@@ -6,10 +6,7 @@ export const WorkoutCard = ({ exercise, isFeatured = false }) => {
   const { name, setsReps, rir, tips, imageUrl } = exercise;
 
   return (
-    <div className={twMerge(
-      "relative bg-white/70 backdrop-blur-xl rounded-[3rem] p-8 shadow-[0_40px_100px_rgba(59,47,47,0.06)] border border-white/20 transition-all duration-500 hover:shadow-[0_50px_120px_rgba(59,47,47,0.1)] group",
-      isFeatured ? "col-span-1 md:col-span-2" : "col-span-1"
-    )}>
+    <div className="relative bg-white/70 backdrop-blur-xl rounded-[3rem] p-8 shadow-[0_40px_100px_rgba(59,47,47,0.06)] border border-white/20 transition-all duration-500 hover:shadow-[0_50px_120px_rgba(59,47,47,0.1)] group w-full">
       
       {/* Main Grid Layout - Less Academic */}
       <div className="flex flex-col gap-8">
@@ -22,7 +19,7 @@ export const WorkoutCard = ({ exercise, isFeatured = false }) => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col gap-6">
           {/* Glassy Bento Group for RIR, Volume & Feedback */}
           <div className="flex-grow flex flex-col gap-4 bg-white/30 backdrop-blur-md p-5 rounded-[2.5rem] border border-white/40 shadow-sm">
             
@@ -77,10 +74,7 @@ export const WorkoutCard = ({ exercise, isFeatured = false }) => {
 
           {/* Image Block - Varied Size */}
           {imageUrl && (
-            <div className={twMerge(
-              "relative rounded-[2.8rem] overflow-hidden bg-gray-100/50 shadow-2xl ring-4 ring-white/50 transition-all duration-700 hover:scale-[1.02] backdrop-blur-sm",
-              isFeatured ? "md:w-1/2 aspect-video" : "md:w-2/5 aspect-[4/5]"
-            )}>
+            <div className="relative rounded-[2.8rem] overflow-hidden bg-gray-100/50 shadow-2xl ring-4 ring-white/50 transition-all duration-700 hover:scale-[1.02] backdrop-blur-sm w-full aspect-video">
               <img src={imageUrl} alt={name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-brown/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <ArrowUpRight size={24} className="absolute bottom-6 right-6 text-white opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500" />

@@ -43,8 +43,7 @@ export const MealCard = ({
   return (
     <div className={twMerge(
       "relative flex flex-col w-full rounded-[3rem] transition-all duration-500 mb-8 overflow-hidden border",
-      isCompleted ? "opacity-70 grayscale-[0.2] scale-[0.98]" : theme.card,
-      isFeatured ? "md:min-h-[400px]" : ""
+      isCompleted ? "opacity-70 grayscale-[0.2] scale-[0.98]" : theme.card
     )}>
       <div 
         onClick={() => setIsOpen(!isOpen)}
@@ -84,7 +83,7 @@ export const MealCard = ({
       </div>
 
       <div className={twMerge("transition-all duration-500 overflow-hidden", isOpen ? "max-h-[1500px] p-8 pt-4" : "max-h-0")}>
-        <div className={twMerge("grid gap-5", isFeatured ? "md:grid-cols-2" : "grid-cols-1")}>
+        <div className="grid grid-cols-1 gap-5">
           {ingredients.map((ing, idx) => {
             const subKey = `${title}-${ing.name}`;
             const sub = substitutions[subKey];
@@ -106,12 +105,12 @@ export const MealCard = ({
                     )}
                   </div>
                   
-                  <div className="flex-grow flex justify-between items-center bg-white/50 backdrop-blur-sm rounded-[2rem] px-6 py-5 border border-brand-brown/5 shadow-sm group-hover:shadow-md transition-all relative">
-                    <span className="font-bold text-base text-brand-brown capitalize leading-none flex items-center gap-2">
-                      {displayName}
-                      {sub && <RefreshCw size={14} className="text-brand-pink/50 animate-spin-slow" />}
+                  <div className="flex-grow flex justify-between items-center bg-white/50 backdrop-blur-sm rounded-[2rem] px-5 py-4 border border-brand-brown/5 shadow-sm group-hover:shadow-md transition-all relative overflow-hidden">
+                    <span className="font-bold text-sm text-brand-brown capitalize leading-tight flex items-center gap-2 min-w-0 flex-grow mr-2">
+                      <span className="truncate">{displayName}</span>
+                      {sub && <RefreshCw size={14} className="text-brand-pink/50 animate-spin-slow shrink-0" />}
                     </span>
-                    <span className={twMerge("font-black text-[10px] px-4 py-2 rounded-full border uppercase tracking-widest", theme.qty)}>{displayQty}</span>
+                    <span className={twMerge("font-black text-[10px] px-3 py-1.5 rounded-full border uppercase tracking-widest shrink-0", theme.qty)}>{displayQty}</span>
                     
                     {sub && (
                       <button 

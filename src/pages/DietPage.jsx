@@ -125,12 +125,12 @@ export default function DietPage({ userId, sheetUrl, title, accentColor = 'pink'
             <img src="/Users/macdememe/.gemini/antigravity/brain/97f44df9-df67-4524-a9d6-2515850cffd0/lemon_slice_transparent_1774997273386.png" alt="" className="w-full h-full object-contain" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+          <div className="flex flex-col gap-8 mt-6">
             {mealCategories.map(([mealType, optionsArray], idx) => {
                // Asymmetrical rhythm
                const isFeatured = idx === 0 || idx === 3;
                return (
-                 <div key={mealType} className={twMerge(isFeatured ? "md:col-span-2" : "col-span-1")}>
+                 <div key={mealType} className="w-full">
                    <MealCategory 
                      title={mealType} 
                      optionsData={optionsArray}

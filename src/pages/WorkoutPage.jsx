@@ -93,7 +93,7 @@ export default function WorkoutPage({ sheetUrl }) {
             <img src="/Users/macdememe/.gemini/antigravity/brain/97f44df9-df67-4524-a9d6-2515850cffd0/strawberry_transparent_1774997303509.png" alt="" className="w-full h-full object-contain" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="flex flex-col gap-8">
             {currentExercises.map((ex, idx) => {
               // Create an asymmetrical rhythm: first and every 4th is featured
               const isFeatured = idx % 4 === 0;
