@@ -28,7 +28,7 @@ export default function HydrationPage() {
   };
 
   const liquidColors = {
-    Water: '#97DE4B',
+    Water: '#79C5E8',
     Coffee: '#3B2F2F',
     Tea: '#E5EDD7',
     Whey: '#F3EADC',
@@ -151,7 +151,7 @@ export default function HydrationPage() {
            <button onClick={() => setAddAmount(prev => Math.max(50, prev - 50))} className="w-14 h-14 rounded-full bg-brand-cream/50 flex items-center justify-center text-brand-brown hover:scale-110 active:scale-95 transition-all">
              <Minus size={24} strokeWidth={3} />
            </button>
-           <button onClick={() => addHydration('Water', addAmount)} className="w-32 h-32 rounded-full bg-brand-green shadow-[0_20px_50px_rgba(151,222,75,0.4)] flex flex-col items-center justify-center hover:scale-105 active:scale-90 transition-all border-8 border-white ring-8 ring-brand-green/20 group">
+           <button onClick={() => addHydration('Water', addAmount)} className="w-32 h-32 rounded-full bg-brand-blue shadow-[0_20px_50px_rgba(58,142,186,0.4)] flex flex-col items-center justify-center hover:scale-105 active:scale-90 transition-all border-8 border-white ring-8 ring-brand-blue/20 group">
              <Droplets size={40} className="text-white group-hover:animate-bounce mb-1" fill="currentColor" />
              <span className="text-[12px] font-black text-white uppercase tracking-widest">{addAmount}ml</span>
            </button>
